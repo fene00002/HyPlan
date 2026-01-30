@@ -1,11 +1,11 @@
-# HyPlan-1.1
-This repository provides the Python and C++ implementation for **HyPlan 1.1**. Additionally, the CARLA-CTS2 benchmark for training, validating and testing is provided.
+# HyPlan
+This repository provides the Python and C++ implementation for **HyPlan**. Additionally, the CARLA-CTS2 benchmark for training, validating and testing is provided.
 
 ## Repository structure
 <pre>
-HyPlan-1.1/
+HyPlan/
 ├── agents/            # All agent implementations
-│   ├── hybrid/        # HyPlanO python implementation
+│   ├── hybrid/        # HyPlan python implementation
 │   ├── planner/       # IS-DESPOT C++ implementation           
 ├── assests/           # CARLA map layout and costmap definitions
 ├── benchmark/         # CARLA-CTS benchmark definitions
@@ -25,12 +25,12 @@ HyPlan-1.1/
 * Install python packages specified in requirements.txt
 
 ## Building:
-1. Navigate to /HyPlan/agents/planner/isdespotO/
+1. Navigate to /HyPlan/agents/planner/isdespot/
 2. `rm -rf build; mkdir build; cd build; cmake ..; make`
 3. `/HyPlan/agents/planner/isdespotO/build/carla_car/is_despotO_carla_car` is the executable binary file of IS-DESPOT's C++ implementation.
 
 ### META arguments:
-The following provides explanations and arguments influencing the general behavior of the HyPlan 1.1 algorithm.
+The following provides explanations and arguments influencing the general behavior of the HyPlan algorithm.
 
 * `--mode [train, validate, test]`
 
@@ -39,7 +39,7 @@ The following provides explanations and arguments influencing the general behavi
 * `--scenario [[0, 09] ...]`
 
   Scenario(s) to evaluate the agent on (default: ['00'] = all). 
-  Use like `--scenario 01 02 03 04` to select the first four scenarios.
+  Use `--scenario 01 02 03 04` to select the first four scenarios.
 
 * `--resume_from_episode [1, 12626]`
 
@@ -137,40 +137,19 @@ The following provides explanations and arguments influencing the general behavi
   Calculates and saves the empirical error distribution of the validation set or calibrate confidence estimates on the test set (default: False).
   WARNING: This will influence execution time and performance.
 
-### HyPlanO arguments:
-* `--hyplano_use_criticality`
-
-  Enables criticality-aware path selection/pruning for HyPlanO (default: False).
-
-* `--hyplano_criticality_num_paths [1, 10]`
-
-  Hard cap on the total number of pedestrian paths (across all pedestrians and modes) to keep when criticality-aware path selection is enabled (default: 5).
-
-* `--path-pre-processing-beta`
-
-  Sets a beta_min to be used in the Path Pre-Processing grouping of similar paths (default: 2).
-
-* `--path-selection-alpha`
-
-  Sets an alpha to enforce the feasibility model of the Criticality Path Selection (default: 0).
-
-* `--num_modes`
-
-  Sets the number of modes for HyPlan 1.1 to use during the algorithm.
-
-## Executing HyPlan 1.1 with $m$ number of modes:
+## Executing HyPlan:
 
 Training:
 ```bash
-python /HyPlanO/controller.py --agent HyPlanO --mode train --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplano --predict_pedestrian_path --gae_lambda 0.9 --clip_gradient --loss_clipping_coefficient 0.2 --clip_critic_loss --critic_loss_coefficient 0.5 --ppo --hyplano_use_criticality --path-selection-alpha 0 --num_modes 3
+python /HyPlanO/controller.py --agent HyPLAN --mode train --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplan --predict_pedestrian_path --gae_lambda 0.9 --clip_gradient --loss_clipping_coefficient 0.2 --clip_critic_loss --critic_loss_coefficient 0.5 --ppo
 ```
 
 Validate:
 ```bash
-python controller.py --agent HyPlanO --mode validate --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplano --predict_pedestrian_path --calibrate_confidence --track_planning_effort --hyplano_use_criticality --path-selection-alpha 0 --num_modes m
+python controller.py --agent HyPLAN --mode validate --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplan --predict_pedestrian_path --calibrate_confidence
 ```
 
 Testing:
 ```bash
-python controller.py --agent HyPlanO --mode test --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplano --predict_pedestrian_path --calibrate_confidence --track_planning_effort --hyplano_use_criticality --path-selection-alpha 0 --num_modes m
+python controller.py --agent HyPLAN --mode test --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplan --predict_pedestrian_path --calibrate_confidence --track_planning_effort
 ```
