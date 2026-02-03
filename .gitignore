@@ -1,0 +1,8 @@
+__pycache__/
+output/
+logs/
+build/
+data/
+tmp/
+process_logs/process_calibration_logs.ipynb
+ped_path_predictor/autobots/models/
