@@ -8,8 +8,7 @@ HyPlan/
 │   ├── hybrid/        # HyPlan python implementation
 │   ├── planner/       # IS-DESPOT C++ implementation           
 ├── assests/           # CARLA map layout and costmap definitions
-├── benchmark/         # CARLA-CTS benchmark definitions
-├── models/            # All trained model files 
+├── benchmark/         # CARLA-CTS benchmark definition
 ├── path_planner/      # Anytime Weighted Hybrid A* for ego-vehicle path planning
 ├── ped_path_predictor/# AutoBot models for trajectory prediction of exo-agents
 ├── process_logs/      # Python notebooks for performance evaluation
@@ -141,7 +140,7 @@ The following provides explanations and arguments influencing the general behavi
 
 Training:
 ```bash
-python /HyPlanO/controller.py --agent HyPLAN --mode train --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplan --predict_pedestrian_path --gae_lambda 0.9 --clip_gradient --loss_clipping_coefficient 0.2 --clip_critic_loss --critic_loss_coefficient 0.5 --ppo
+python controller.py --agent HyPLAN --mode train --reward_function despot --hyplan_num_forward_passes 10 --hidden_layer_size 256 --model_architecture florian --use_dropout --output_directory hyplan --predict_pedestrian_path --gae_lambda 0.9 --clip_gradient --loss_clipping_coefficient 0.2 --clip_critic_loss --critic_loss_coefficient 0.5 --ppo
 ```
 
 Validate:
